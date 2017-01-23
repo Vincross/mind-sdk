@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SensorWalkSkill</title>
+		<script type="text/javascript" src="mind-framework.js"></script>
+		<script type="text/javascript">
+			mind.init({callback: function(robot) {
+				skillID="SensorWalkSkill";
+				robot.connectSkill({
+					skillID: skillID
+				});
+				document.getElementById("start").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "start"
+					})
+				}
+				document.getElementById("stop").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "stop"
+					})
+				}
+			}});
+		</script>
+	</head>
+	<body>
+		<button id="start">Start</button>
+		<button id="stop">Stop</button>
+	</body>
+</html>
