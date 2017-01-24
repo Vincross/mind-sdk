@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"image"
 	"math"
+	"os"
 	"time"
 
 	"mind/core/framework/drivers/hexabody"
@@ -89,6 +90,10 @@ func (d *SightSkill) OnStart() {
 
 func (d *SightSkill) OnClose() {
 	hexabody.Close()
+}
+
+func (d *SightSkill) OnDisconnect() {
+	os.Exit(0) // Closes the process when remote disconnects
 }
 
 func (d *SightSkill) OnRecvString(data string) {

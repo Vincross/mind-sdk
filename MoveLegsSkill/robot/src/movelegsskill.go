@@ -8,6 +8,7 @@ package examples
 
 import (
 	"math"
+	"os"
 
 	"mind/core/framework/drivers/hexabody"
 	"mind/core/framework/skill"
@@ -60,6 +61,10 @@ func (d *MoveLegsSkill) OnStart() {
 
 func (d *MoveLegsSkill) OnClose() {
 	hexabody.Close()
+}
+
+func (d *SightSkill) OnDisconnect() {
+	os.Exit(0) // Closes the process when remote disconnects
 }
 
 func (d *MoveLegsSkill) OnRecvString(data string) {

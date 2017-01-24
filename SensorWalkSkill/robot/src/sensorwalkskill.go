@@ -7,6 +7,7 @@ package examples
 
 import (
 	"math"
+	"os"
 	"time"
 
 	"mind/core/framework/drivers/distance"
@@ -84,6 +85,10 @@ func (d *SensorWalkSkill) OnStart() {
 func (d *SensorWalkSkill) OnClose() {
 	hexabody.Close()
 	distance.Close()
+}
+
+func (d *SightSkill) OnDisconnect() {
+	os.Exit(0) // Closes the process when remote disconnects
 }
 
 func (d *SensorWalkSkill) OnRecvString(data string) {
