@@ -87,7 +87,7 @@ func (d *SensorWalkSkill) OnClose() {
 	distance.Close()
 }
 
-func (d *SightSkill) OnDisconnect() {
+func (d *SensorWalkSkill) OnDisconnect() {
 	os.Exit(0) // Closes the process when remote disconnects
 }
 

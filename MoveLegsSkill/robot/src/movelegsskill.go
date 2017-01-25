@@ -63,7 +63,7 @@ func (d *MoveLegsSkill) OnClose() {
 	hexabody.Close()
 }
 
-func (d *SightSkill) OnDisconnect() {
+func (d *MoveLegsSkill) OnDisconnect() {
 	os.Exit(0) // Closes the process when remote disconnects
 }
 
