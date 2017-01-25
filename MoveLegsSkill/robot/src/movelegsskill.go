@@ -38,7 +38,7 @@ func ready() {
 
 func moveLegs(v float64) {
 	hexabody.MoveJoint(0, 1, 45*math.Sin(v*math.Pi/180)+70, 1)
-	hexabody.MoveJoint(0, 0, 45*math.Cos(v*math.Pi/180)+100, 1)
+	hexabody.MoveJoint(0, 0, 35*math.Cos(v*math.Pi/180)+60, 1)
 	hexabody.MoveJoint(1, 1, 45*math.Cos(v*math.Pi/180)+70, 1)
 }
 
