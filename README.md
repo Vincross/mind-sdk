@@ -3,7 +3,7 @@
 ## [SensorWalkSkill](SensorWalkSkill)
 SensorWalkSkill makes the HEXA to walk forward and change direction when encountering obstacles.
 
-## [MoveLegsSkill](MoveArmsSkill)
+## [MoveLegsSkill](MoveLegsSkill)
 MoveLegsSkill makes the HEXA to move its front right leg up and down and front left leg in a circle.
 
 ## [BalanceSkill](BalanceSkill)
