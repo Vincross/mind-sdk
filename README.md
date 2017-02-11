@@ -12,3 +12,6 @@ surface. You could also try to hold the HEXA's feet with your hands.
 
 ## [SightSkill](SightSkill)
 SightSkill makes the HEXA react to what's infront of it by comparing images captured from the camera.
+
+## [PeripheralsSkill](PeripheralsSkill)
+PeripheralsSkill implements a skill that shows how to use peripherals interface.
