@@ -1,6 +1,6 @@
 /*
-* PeripheralsSkill implements a skill that shows how to use peripherals interface.
-* This example use pca9685 as i2c device, i2c part of it need to be modified according to specific device.
+* PeripheralsSkill implements a skill that shows how to use peripherals interfaces.
+* I2C part of it need to be modified according to specific device.
  */
 package example
 
