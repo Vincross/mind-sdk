@@ -44,7 +44,7 @@ We will not go in to how to do this on Windows but Google is your friend :)
 Example of running the SensorWalkSkill example:
 ```
 $ git clone https://github.com/vincross/hexa-example-skills.git
-$ cd SensorWalkSkill
+$ cd hexa-example-skills/SensorWalkSkill
 $ mind run -r HEXA # Where HEXA is the default name of your robot (this can be changed through the mobile app)
 ```
 The SensorWalkSkill should now be running on your HEXA and display some output in your terminal.
