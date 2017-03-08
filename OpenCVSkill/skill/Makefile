@@ -15,7 +15,8 @@ ${MPK} : ${SKILL_BIN}
 build : ${SKILL_BIN}
 
 ${SKILL_BIN} : ${DEPS}
-	git submodule update && cd robot/src/vendor/github.com/lazywei/go-opencv/ && git init && git checkout 76a80c792afab341300db33893a39c06b366787b
+	git submodule update --init --recursive
+	cd robot/src/vendor/github.com/lazywei/go-opencv/ && git checkout 76a80c792afab341300db33893a39c06b366787b
 	mind build
 
 ${DEPS} : ${DEPS_DIR} ${OPENCV_ARTIFACTS}
