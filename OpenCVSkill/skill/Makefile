@@ -5,12 +5,15 @@ DEPS := robot/deps/lib robot/deps/include
 SKILL_BIN := robot/skill
 MPK := skill.mpk
 
-.PHONY : pack build clean
+.PHONY : pack build clean run
 
 pack : ${MPK}
 
 ${MPK} : ${SKILL_BIN}
 	mind pack
+
+run : ${MPK}
+	mind run
 
 build : ${SKILL_BIN}
 

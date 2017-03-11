@@ -1,30 +1,76 @@
 package examples
 
 import (
+	"bytes"
+	"encoding/base64"
+	"image/jpeg"
+	"mind/core/framework"
+	"mind/core/framework/drivers/hexabody"
+	"mind/core/framework/drivers/media"
+	"mind/core/framework/log"
 	"mind/core/framework/skill"
+	"os"
 
-	opencv "github.com/lazywei/go-opencv/opencv"
+	"github.com/lazywei/go-opencv/opencv"
 )
 
 type OpenCVSkill struct {
 	skill.Base
+	stop    chan bool
+	cascade *opencv.HaarCascade
 }
 
 func NewSkill() skill.Interface {
-	return &OpenCVSkill{}
+	return &OpenCVSkill{
+		stop:    make(chan bool),
+		cascade: opencv.LoadHaarClassifierCascade("assets/haarcascade_frontalface_alt.xml"),
+	}
+}
+
+func (d *OpenCVSkill) sight() {
+	for {
+		select {
+		case <-d.stop:
+			return
+		default:
+			image := media.SnapshotRGBA()
+			buf := new(bytes.Buffer)
+			jpeg.Encode(buf, image, nil)
+			str := base64.StdEncoding.EncodeToString(buf.Bytes())
+			framework.SendString(str)
+			cvimg := opencv.FromImageUnsafe(image)
+			faces := d.cascade.DetectObjects(cvimg)
+			hexabody.StandWithHeight(float64(len(faces)) * 50)
+		}
+	}
 }
 
 func (d *OpenCVSkill) OnStart() {
-	filename := "assets/bert.jpg"
-	srcImg := opencv.LoadImage(filename)
-	if srcImg == nil {
-		panic("Loading Image failed")
+	log.Info.Println("Started")
+	hexabody.Start()
+	if !media.Available() {
+		log.Error.Println("Media driver not available")
+		return
 	}
-	defer srcImg.Release()
-	resized1 := opencv.Resize(srcImg, 400, 0, 0)
-	resized2 := opencv.Resize(srcImg, 300, 500, 0)
-	resized3 := opencv.Resize(srcImg, 300, 500, 2)
-	opencv.SaveImage("resized1.jpg", resized1, 0)
-	opencv.SaveImage("resized2.jpg", resized2, 0)
-	opencv.SaveImage("resized3.jpg", resized3, 0)
+	if err := media.Start(); err != nil {
+		log.Error.Println("Media driver could not start")
+	}
+}
+
+func (d *OpenCVSkill) OnClose() {
+	hexabody.Close()
+}
+
+func (d *OpenCVSkill) OnDisconnect() {
+	os.Exit(0) // Closes the process when remote disconnects
+}
+
+func (d *OpenCVSkill) OnRecvString(data string) {
+	log.Info.Println(data)
+	switch data {
+	case "start":
+		go d.sight()
+	case "stop":
+		d.stop <- true
+	}
 }
