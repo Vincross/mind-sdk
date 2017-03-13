@@ -17,5 +17,5 @@ SightSkill makes the HEXA react to what's infront of it by comparing images capt
 PeripheralsSkill implements a skill that shows how to use the peripherals interface.
 
 ## [OpenCVSkill](OpenCVSkill)
-OpenCVSkill is an example project showing how to cross-compile OpenCV and bind it to Golang for Skill development. 
+OpenCVSkill is an example project showing how to cross-compile C++ libraries and bind them to Golang for Skill development. 
 This Skill makes the HEXA stand up when it detects human faces.
