@@ -3,7 +3,6 @@ ARTIFACT := ${GOBIN}/mind \
 						${GOBIN}/mind-Darwin-x86_64 \
 						${GOBIN}/mind-Linux-x86_64 \
 						${GOBIN}/mind.exe
-MIND_SRC := ../mind
 
 .PHONY : install build clean attach
 
