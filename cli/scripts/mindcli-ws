@@ -22,7 +22,7 @@ echo ${INSTALL_MSG_PREFIX}${MERGED_JSON} | \
 	chargingStatus=`echo $json | jq -r ".chargingStatus"` 
 	level=`echo $json | jq -r ".level"` 
 	if [ ! -z "$status" ] && [ "$status" != "null" ] && [ ! -z "$progress" ]; then
-		if [ "$status" == "Succeed" ]; then
+		if [ "${status,,}" == "succeed" ]; then
 			echo "Installation successful !"
 			echo "Point your browser to: http://localhost:7597"
 			continue
