@@ -18,10 +18,10 @@ push :
 	docker push ${NAME} 
 
 install : main.go
-	GOOS=darwin  GOARCH=amd64  go build -i -o ${GOBIN}/mind-Darwin-x86_64 mindsdk/cli 
-	GOOS=darwin  GOARCH=amd64  go build -i -o ${GOBIN}/mind mindsdk/cli 
-	GOOS=linux   GOARCH=amd64  go build -i -o ${GOBIN}/mind-Linux-x86_64 mindsdk/cli 
-	GOOS=windows GOARCH=amd64  go build -i -o ${GOBIN}/mind.exe mindsdk/cli
+	go build -i -o ${GOBIN}/mind mindsdk/cli 
+	GOOS=darwin  GOARCH=amd64 go build -i -o ${GOBIN}/mind-Darwin-x86_64 mindsdk/cli 
+	GOOS=linux   GOARCH=amd64 go build -i -o ${GOBIN}/mind-Linux-x86_64 mindsdk/cli 
+	GOOS=windows GOARCH=amd64 go build -i -o ${GOBIN}/mind.exe mindsdk/cli
 
 upload : ${ARTIFACTS}
 	scp ${ARTIFACTS} root@vcrxyz.com:/mindcli
