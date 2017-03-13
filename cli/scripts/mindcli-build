@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -eu
+export PKG_CONFIG_PATH="/go/src/skill/robot/deps/lib/pkgconfig"
+export CGO_CFLAGS="-I/go/src/skill/robot/deps/include"
+export CGO_LDFLAGS="-L/go/src/skill/robot/deps/lib"
+mindcli-genmain
+go build -o robot/skill skillexec

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -eu
+if [ -e manifest.json ] && [ -e robot/skill ] && [ -e remote ]; then
+	zip -r -qq /tmp/skill.mpk manifest.json remote/ robot/skill robot/deps robot/assets robot/deps 
+	cp -f /tmp/skill.mpk .
+else
+	echo "No skill to pack. Did you build it yet?"
+fi

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eu
+MPK=$1
+cat >/tmp/Caddyfile <<EOL
+0.0.0.0:${SERVE_MPK_PORT}
+root .
+rewrite / {
+        regexp .*
+        to /$1
+}
+EOL
+caddy -quiet -conf="/tmp/Caddyfile"

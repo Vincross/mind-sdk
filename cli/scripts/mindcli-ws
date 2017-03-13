@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -eu
+LOCAL_IP=$1
+HEXA_IP=$2
+PING_MSG=$'\x02\x01'
+INSTALL_MSG_PREFIX=$'\x03\x0F'
+md5=($(md5sum skill.mpk))
+MERGED_JSON=`echo "{\"url\": \"${LOCAL_IP}/$md5\"}" $(cat manifest.json) | jq add -s`
+WSS=wss://${HEXA_IP}:7589/remotes?userhash=${USER_HASH}
+LOG=/tmp/wsmessages
+cached_batterymsg=""
+rm -f ${LOG}
+echo ${INSTALL_MSG_PREFIX}${MERGED_JSON} | \
+	wsta --ping 5 --ping-msg $PING_MSG ${WSS} 2> /dev/null 1> >(while read -r line; do 
+	json=`echo ${line:2}`
+	# Handle download and install status
+	progress=`echo $json | jq -r ".progress"`
+	status=`echo $json | jq -r ".status"` 
+	message=`echo $json | jq -r ".message"` 
+	battery=`echo $json | jq -r ".battery"` 
+	temperature=`echo $json | jq -r ".temperature"` 
+	chargingStatus=`echo $json | jq -r ".chargingStatus"` 
+	level=`echo $json | jq -r ".level"` 
+	if [ ! -z "$status" ] && [ "$status" != "null" ] && [ ! -z "$progress" ]; then
+		if [ "$status" == "Succeed" ]; then
+			echo "Installation successful !"
+			echo "Point your browser to: http://localhost:7597"
+			continue
+		fi
+		echo "$(printf "$status %.0f" $(echo "$progress * 100" | bc -l))%"
+		if [ ! -z "$message" ]; then
+			echo $message
+		fi
+		continue
+	fi
+	if [ ! -z "$chargingStatus" ] && [ "$chargingStatus" != "null" ]; then
+		if [ "$chargingStatus" == "chargerIn" ]; then
+			charging="[Charging]"
+		else
+			charging="[Not charging]"
+		fi
+		batterymsg=`echo "Battery: $(echo "$battery* 100" | bc -l)% $charging"`
+		if [ "$batterymsg" != "$cached_batterymsg" ]; then
+			cached_batterymsg=$batterymsg
+			echo $batterymsg
+		fi
+		continue
+	fi
+	if [ ! -z "$level" ] && [ "$level" != "null" ]; then
+		echo $message
+		continue
+	fi	
+done)

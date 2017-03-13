@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -eu
+MPK=$1
+LOCAL_IP=$2
+HEXA_IP=$3
+mindcli-serve ${MPK} &
+mindcli-remote ${HEXA_IP} &
+sleep 1
+mindcli-ws ${LOCAL_IP} ${HEXA_IP} 

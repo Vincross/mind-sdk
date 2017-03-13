@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -eu
+HEXA_IP=$1
+mkdir -p /skill
+unzip -qq skill.mpk -d /skill
+js="HEXA_IP=\"${HEXA_IP}\";
+HEXA_PORT=7588;
+mind = new Mind({userhash: \"$USER_HASH\"});"
+printf "$js$(cat /.go/src/mind/sdk/js/mind-framework.js)" > /skill/remote/mind-framework.js
+cat >/skill/remote/Caddyfile <<EOL
+0.0.0.0:${SERVE_REMOTE_PORT}
+EOL
+cd /skill/remote && caddy -quiet

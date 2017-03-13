@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -eu
+SKILLNAME=$1
+SKILLID="${2:-${1}}" # Will use SKILLNAME if empty
+if [ -d "${SKILLNAME}" ]; then
+	echo "${SKILLNAME} already exists"
+	exit -1
+fi
+cp -R /.go/src/boilerplate ${SKILLNAME}
+grep -rl "BoilerplateSkillName" ${SKILLNAME} | xargs sed -i "s/BoilerplateSkillName/${SKILLNAME}/g"
+grep -rl "BoilerplateSkillID" ${SKILLNAME} | xargs sed -i "s/BoilerplateSkillID/${SKILLID}/g"
+mv ${SKILLNAME}/robot/src/example.go ${SKILLNAME}/robot/src/${SKILLNAME,,}.go

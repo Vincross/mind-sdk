@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -eu
+EMAIL=$1
+PASSWORD=$2
+URL="https://api.vincross.com/user-service/v1/users?action=login"
+JSON="{\"email\":\"${EMAIL}\",\"password\":\"${PASSWORD}\"}"
+RESULT=`curl -s -H "Content-Type: application/json" -X POST -d "${JSON}" "${URL}"` 
+code=$(echo ${RESULT} | jq -r ".code")
+if [ "${code}" == OK ]; then
+	echo -n ${RESULT} | jq -r ".data.users[0].userhash" 
+else
+	exit -1
+fi

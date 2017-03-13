@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -eu
+SKILLID=`cat ${SKILLDIR}/manifest.json | jq -r ".skillID"`
+cat >/.go/src/skillexec/main.go <<EOL
+package main
+import "os"
+import "os/signal"
+import "syscall"
+import "mind/core/framework"
+import "mind/core/framework/skill"
+import "mind/libraries/unix"
+import SKILL "skill/robot/src"
+func main() {
+  if err := unix.ExitWhenParentDead(); err != nil {
+    return
+  }
+  skill.Current = SKILL.NewSkill()
+  framework.Init("${SKILLID}", false)
+  skill.Current.OnStart()
+  c := make(chan os.Signal, 1)
+  signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+  <-c
+  skill.Current.OnClose()
+}
+EOL
