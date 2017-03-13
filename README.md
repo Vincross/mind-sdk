@@ -1,4 +1,5 @@
 # MIND SDK
+[Click here for more info](https://www.vincross.com/developer/introduction/mind-overview)
 
 ## XCompile
 A Docker container with everything needed to cross-compile C/C++ and Golang applications to the ARM architecture.
@@ -7,4 +8,3 @@ A Docker container with everything needed to cross-compile C/C++ and Golang appl
 Command-line Interface used for *Skill* development.
 ![](https://i.imgur.com/OxrFxTB.png)
 
-[Click here for more info](https://www.vincross.com/developer/introduction/mind-overview)
