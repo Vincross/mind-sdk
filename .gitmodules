@@ -1,0 +1,3 @@
+[submodule "examples/OpenCVSkill/skill/robot/src/vendor/github.com/lazywei/go-opencv"]
+	path = examples/OpenCVSkill/skill/robot/src/vendor/github.com/lazywei/go-opencv
+	url = git@github.com:lazywei/go-opencv.git

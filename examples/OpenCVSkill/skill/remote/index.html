@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>OpenCVSkill</title>
+		<script type="text/javascript" src="mind-framework.js"></script>
+		<script type="text/javascript">
+			mind.init({callback: function(robot) {
+				skillID="OpenCVSkill";
+				robot.connectSkill({
+					skillID: skillID,
+					callback: robot.onRecvSkillData(function(skillID, data) {
+						document.getElementById('img').setAttribute('src', 'data:image/jpeg;base64,'+data);
+					})
+				});
+				document.getElementById("start").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "start"
+					})
+				}
+				document.getElementById("stop").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "stop"
+					})
+				}
+			}});
+		</script>
+	</head>
+	<body>
+		<button id="start">Start</button>
+		<button id="stop">Stop</button>
+		<img id="img" alt="img" src="a" />
+	</body>
+</html>

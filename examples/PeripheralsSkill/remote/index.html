@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>HEXA Remote Example</title>
+		<script type="text/javascript" src="mind-framework.js"></script>
+		<script type="text/javascript">
+			mind.init({callback: function(robot){
+				skillID="PeripheralsSkill";
+
+				robot.connectSkill({
+					skillID: skillID
+				});
+
+			}});
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

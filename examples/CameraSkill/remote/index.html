@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>HEXA Remote Example</title>
+		<script type="text/javascript" src="mind-framework.js"></script>
+		<script type="text/javascript">
+			mind.init({callback: function(robot){
+				skillID="CameraSkill";
+
+				robot.connectSkill({
+					skillID: skillID,
+					callback: robot.onRecvSkillData(function(skillID, data) {
+						document.getElementById('img').setAttribute( 'src', 'data:image/png;base64,'+data);
+					})
+				});
+
+			}});
+		</script>
+	</head>
+	<body>
+		<img id="img" alt="img" src="a" />
+	</body>
+</html>
