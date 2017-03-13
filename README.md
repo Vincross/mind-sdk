@@ -1,6 +1,7 @@
 # MIND SDK
 This repository contains everything needed to develop *Skills* for the [HEXA](https://www.vincross.com/hexa)
-[Click here for more info](https://www.vincross.com/developer/introduction/mind-overview)
+
+Check out the [Introduction and Getting Started guides](https://www.vincross.com/developer/introduction/mind-overview)
 
 ## XCompile
 A Docker container with everything needed to cross-compile C/C++ and Golang applications to the ARM architecture.
