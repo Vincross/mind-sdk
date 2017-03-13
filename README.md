@@ -3,7 +3,7 @@ This repository contains everything needed to develop *Skills* for the [HEXA](ht
 
 Check out the [Introduction and Getting Started guides](https://www.vincross.com/developer/introduction/mind-overview)
 
-## MIND Command-line Interface
+## [MIND Command-line Interface](cli)
 Command-line Interface used for *Skill* development.
 
 ```
@@ -26,5 +26,8 @@ Available Commands:
 
 Use "mind [command] --help" for more information about a command.
 ```
-## XCompile
+## [XCompile](xcompile)
 A Docker container with everything needed to cross-compile C/C++ and Golang applications to the ARM architecture.
+
+## [Examples](examples)
+*Skill* examples to learn from.
