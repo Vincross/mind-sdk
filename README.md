@@ -1,4 +1,5 @@
 # MIND SDK
+This repository contains everything needed to develop *Skills* for the [HEXA](https://www.vincross.com/hexa(
 [Click here for more info](https://www.vincross.com/developer/introduction/mind-overview)
 
 ## XCompile
