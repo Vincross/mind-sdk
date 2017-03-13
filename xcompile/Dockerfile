@@ -49,8 +49,8 @@ RUN wget https://storage.googleapis.com/golang/${GOVERSION}.linux-armv6l.tar.gz 
 	rm -fr go && rm -frv ${GOVERSION}.linux-armv6l.tar.gz
 # Configure Golang
 ENV GOPATH=/go \
-		GOOS=linux \
-		GOARCH=arm \
-		GOARM=7 \
-		CGO_ENABLED=1
+	GOOS=linux \
+	GOARCH=arm \
+	GOARM=7 \
+CGO_ENABLED=1
 ENV PATH=${PATH}:${GOPATH}/bin:/usr/local/go/bin \
