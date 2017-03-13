@@ -1,8 +1,11 @@
 NAME := vincross/mindcli
-ARTIFACT := ${GOBIN}/mind \
-						${GOBIN}/mind-Darwin-x86_64 \
-						${GOBIN}/mind-Linux-x86_64 \
-						${GOBIN}/mind.exe
+ARTIFACT := \
+	${GOBIN}/mind \
+	${GOBIN}/mind-Darwin-x86_64 \
+	${GOBIN}/mind-Linux-x86_64 \
+	${GOBIN}/mind.exe
+
+GOBIN ?= ${GOPATH}/bin
 
 .PHONY : install build clean attach
 
