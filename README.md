@@ -29,7 +29,7 @@ Available Commands:
 Use "mind [command] --help" for more information about a command.
 ```
 ## [XCompile](xcompile)
-A Docker container with everything needed to cross-compile C/C++ and Golang applications to the ARM architecture.
+A Docker image with everything needed to cross-compile C/C++ and Golang applications to the ARM architecture.
 
 ## [Examples](examples)
 *Skill* examples to learn from.
