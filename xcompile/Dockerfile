@@ -2,15 +2,15 @@ FROM ubuntu:14.04
 # Basics and cross-compile tools
 ENV CROSS arm-linux-gnueabihf
 RUN apt-get update && apt-get upgrade -y && apt-get install -y \
-	unzip \
-	wget \
-	git \
-	gcc-${CROSS} \
-	g++-${CROSS} \
-	cmake \
-	pkg-config \
-	jq \
-	&& apt-get clean && apt-get autoremove --purge
+    unzip \
+    wget \
+    git \
+    gcc-${CROSS} \
+    g++-${CROSS} \
+    cmake \
+    pkg-config \
+    jq \
+    && apt-get clean && apt-get autoremove --purge
 # Setup cross compilers
 ENV AS=/usr/bin/${CROSS}-as \
     AR=/usr/bin/${CROSS}-ar \
@@ -32,25 +32,25 @@ deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports/ trusty-security main rest
 deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports/ trusty-backports main restricted universe multiverse\n\
 deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports/ trusty-proposed main restricted universe multiverse\n"\
 > /etc/apt/sources.list && \
-	dpkg --add-architecture armhf && \
-	apt-get update && apt-get clean && apt-get autoremove --purge
+  dpkg --add-architecture armhf && \
+  apt-get update && apt-get clean && apt-get autoremove --purge
 ############################
 # Golang
 ############################
 ENV GOVERSION go1.8
 # Install Golang amd64 
 RUN wget https://storage.googleapis.com/golang/${GOVERSION}.linux-amd64.tar.gz && \
-	tar -C /usr/local -xzf ${GOVERSION}.linux-amd64.tar.gz && \
-	rm ${GOVERSION}.linux-amd64.tar.gz 
+    tar -C /usr/local -xzf ${GOVERSION}.linux-amd64.tar.gz && \
+    rm ${GOVERSION}.linux-amd64.tar.gz 
 # Install Golang armv6l 
 RUN wget https://storage.googleapis.com/golang/${GOVERSION}.linux-armv6l.tar.gz && \
-	tar -xzf ${GOVERSION}.linux-armv6l.tar.gz && \
-	cp -R go/pkg/linux_arm /usr/local/go/pkg/ && \
-	rm -fr go && rm -frv ${GOVERSION}.linux-armv6l.tar.gz
+    tar -xzf ${GOVERSION}.linux-armv6l.tar.gz && \
+    cp -R go/pkg/linux_arm /usr/local/go/pkg/ && \
+    rm -fr go && rm -frv ${GOVERSION}.linux-armv6l.tar.gz
 # Configure Golang
 ENV GOPATH=/go \
-	GOOS=linux \
-	GOARCH=arm \
-	GOARM=7 \
-CGO_ENABLED=1
+    GOOS=linux \
+    GOARCH=arm \
+    GOARM=7 \
+    CGO_ENABLED=1
 ENV PATH=${PATH}:${GOPATH}/bin:/usr/local/go/bin \
