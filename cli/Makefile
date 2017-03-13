@@ -1,11 +1,13 @@
 NAME := vincross/mindcli
-ARTIFACT := \
+
+GOBIN ?= ${GOPATH}/bin
+
+ARTIFACTS := \
 	${GOBIN}/mind \
 	${GOBIN}/mind-Darwin-x86_64 \
 	${GOBIN}/mind-Linux-x86_64 \
 	${GOBIN}/mind.exe
 
-GOBIN ?= ${GOPATH}/bin
 
 .PHONY : install build clean attach
 
@@ -15,19 +17,17 @@ build :
 push :
 	docker push ${NAME} 
 
-install : ${ARTIFACT}
-
-${ARTIFACT} : main.go
+install : main.go
 	GOOS=darwin  GOARCH=amd64  go build -i -o ${GOBIN}/mind-Darwin-x86_64 mindsdk/cli 
 	GOOS=darwin  GOARCH=amd64  go build -i -o ${GOBIN}/mind mindsdk/cli 
 	GOOS=linux   GOARCH=amd64  go build -i -o ${GOBIN}/mind-Linux-x86_64 mindsdk/cli 
 	GOOS=windows GOARCH=amd64  go build -i -o ${GOBIN}/mind.exe mindsdk/cli
 
-upload : ${ARTIFACT}
-	scp ${ARTIFACT} root@vcrxyz.com:/mindcli
+upload : ${ARTIFACTS}
+	scp ${ARTIFACTS} root@vcrxyz.com:/mindcli
 
 clean :
-	rm -f ${ARTIFACT}
+	rm -f ${ARTIFACTS}
 
 attach :
 	docker run -it vincross/mindcli bash
