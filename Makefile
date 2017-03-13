@@ -2,6 +2,13 @@
 
 build : xcompile cli
 
+install : xcompile cli
+	cd cli && make install 
+
+push : xcompile cli
+	cd xcompile && make push
+	cd cli && make push
+
 xcompile : 
 	cd xcompile && make
 
