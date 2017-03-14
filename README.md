@@ -36,11 +36,12 @@ Use "mind [command] --help" for more information about a command.
 * Windows + Hyper-V
 
 ### Build instructions (macOS/Linux)
+* Project has to be cloned to somewhere in your `$GOPATH` 
+* To install your `$GOBIN` has to be set.
 ```
 $ cd mindsdk/cli
 $ make build install 
 ```
-*To install your `$GOBIN` has to be set.*
 
 ## [XCompile](xcompile)
 A Docker image with everything needed to cross-compile C/C++ and Golang applications to the ARM architecture.
