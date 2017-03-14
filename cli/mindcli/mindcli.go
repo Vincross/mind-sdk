@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"os/user"
 	"regexp"
 	"runtime"
 	"strings"
@@ -65,6 +66,17 @@ func (mindcli *MindCli) dockerUpgradeImageArgs() []string {
 	}
 }
 
+func mindUser() string {
+	if runtime.GOOS == "linux" {
+		user, err := user.Current()
+		if err != nil {
+			return ""
+		}
+		return user.Uid
+	}
+	return ""
+}
+
 func (mindcli *MindCli) dockerXArgs(args ...string) []string {
 	c := []string{
 		"run",
@@ -72,6 +84,7 @@ func (mindcli *MindCli) dockerXArgs(args ...string) []string {
 		"--rm",
 		"-p", fmt.Sprintf("%d:%d", mindcli.config.ServeRemotePort, mindcli.config.ServeRemotePort),
 		"-p", fmt.Sprintf("%d:%d", mindcli.config.ServeMPKPort, mindcli.config.ServeMPKPort),
+		"-e", fmt.Sprintf("MIND_USER=%s", mindUser()),
 		"-e", fmt.Sprintf("SERVE_REMOTE_PORT=%d", mindcli.config.ServeRemotePort),
 		"-e", fmt.Sprintf("SERVE_MPK_PORT=%d", mindcli.config.ServeMPKPort),
 		"-e", fmt.Sprintf("USER_HASH=%s", mindcli.userConfig.userHash),

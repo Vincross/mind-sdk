@@ -10,3 +10,6 @@ cp -R /.go/src/boilerplate ${SKILLNAME}
 grep -rl "BoilerplateSkillName" ${SKILLNAME} | xargs sed -i "s/BoilerplateSkillName/${SKILLNAME}/g"
 grep -rl "BoilerplateSkillID" ${SKILLNAME} | xargs sed -i "s/BoilerplateSkillID/${SKILLID}/g"
 mv ${SKILLNAME}/robot/src/example.go ${SKILLNAME}/robot/src/${SKILLNAME,,}.go
+if [ -n "${MIND_USER}" ]; then
+	chown -R ${MIND_USER}:${MIND_USER} ${SKILLNAME}
+fi
