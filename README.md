@@ -5,6 +5,12 @@ This repository contains everything needed to develop *Skills* for the [HEXA](ht
 
 Check out the [Introduction and Getting Started guides](https://www.vincross.com/developer/introduction/mind-overview)
 
+### Supported platforms
+* macOS
+* Linux
+* Windows
+* Windows + Hyper-V
+
 ## [MIND Command-line Interface](cli)
 Command-line Interface used for *Skill* development.
 
