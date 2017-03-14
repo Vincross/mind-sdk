@@ -37,7 +37,7 @@ echo ${INSTALL_MSG_PREFIX}${MERGED_JSON} | \
 			status="Installing"
 		fi
 		if [ "${status}" == "failed" ]; then
-			status="${RED}Failed${NOCOLOR}"
+			status="${RED}Installation failed ! ${NOCOLOR}"
 		fi
 		echo -e "$(printf "$status %.0f" $(echo -e "$progress * 100" | bc -l))%"
 		if [ ! -z "$message" ]; then
