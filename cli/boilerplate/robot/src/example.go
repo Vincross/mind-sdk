@@ -22,6 +22,14 @@ func (d *BoilerplateSkillName) OnClose() {
 	// Use this method to do something when this skill is closing.
 }
 
+func (d *BoilerplateSkillName) OnConnect() {
+	// Use this method to do something when the remote connected.
+}
+
+func (d *BoilerplateSkillName) OnDisconnect() {
+	// Use this method to do something when the remote disconnected.
+}
+
 func (d *BoilerplateSkillName) OnRecvJson(data []byte) {
 	// Use this method to do something when skill receive json data from remote client.
 }
