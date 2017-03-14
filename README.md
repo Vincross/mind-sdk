@@ -5,11 +5,6 @@ This repository contains everything needed to develop *Skills* for the [HEXA](ht
 
 Check out the [Introduction and Getting Started guides](https://www.vincross.com/developer/introduction/mind-overview)
 
-### Supported platforms
-* macOS
-* Linux
-* Windows
-* Windows + Hyper-V
 
 ## [MIND Command-line Interface](cli)
 Command-line Interface used for *Skill* development.
@@ -34,6 +29,12 @@ Available Commands:
 
 Use "mind [command] --help" for more information about a command.
 ```
+### Supported platforms
+* macOS
+* Linux
+* Windows
+* Windows + Hyper-V
+
 ## [XCompile](xcompile)
 A Docker image with everything needed to cross-compile C/C++ and Golang applications to the ARM architecture.
 
