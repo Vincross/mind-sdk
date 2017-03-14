@@ -2,7 +2,7 @@
 set -eu
 GREEN='\033[0;32m'
 RED='\033[0;31m'
-NOCOLOR='\033[0;31m'
+NOCOLOR='\033[0;0m'
 LOCAL_IP=$1
 HEXA_IP=$2
 PING_MSG=$'\x02\x01'
@@ -26,7 +26,7 @@ echo ${INSTALL_MSG_PREFIX}${MERGED_JSON} | \
 	level=`echo $json | jq -r ".level"` 
 	if [ ! -z "$status" ] && [ "$status" != "null" ] && [ ! -z "$progress" ]; then
 		if [ "${status,,}" == "succeed" ]; then
-			echo -e "${GREEN}Installation successful !"
+			echo -e "${GREEN}Installation successful !${NOCOLOR}"
 			echo "Point your browser to: http://localhost:7597"
 			continue
 		fi
@@ -37,7 +37,7 @@ echo ${INSTALL_MSG_PREFIX}${MERGED_JSON} | \
 			status="Installing"
 		fi
 		if [ "${status}" == "failed" ]; then
-			status="${RED}Failed"
+			status="${RED}Failed${NOCOLOR}"
 		fi
 		echo -e "$(printf "$status %.0f" $(echo -e "$progress * 100" | bc -l))%"
 		if [ ! -z "$message" ]; then
