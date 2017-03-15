@@ -16,6 +16,7 @@ SKILLID=`echo $MANIFEST | jq -r ".skillID"`
 
 PING_MSG=$'\x02\x01'
 PING_FREQUENCY=5
+
 INSTALL_MSG_PREFIX=$'\x03\x0F'
 INSTALL_JSON=`echo "{\"url\": \"${LOCAL_IP}/${MPK_MD5}\"}" ${MANIFEST} | jq add -s`
 INSTALL_MSG="${INSTALL_MSG_PREFIX}${INSTALL_JSON}"
@@ -24,9 +25,14 @@ CONNECT_MSG_PREFIX=$'\x03\x01'
 CONNECT_JSON=`echo "{\"skillID\": \"${SKILLID}\"}"`
 CONNECT_MSG="${CONNECT_MSG_PREFIX}${CONNECT_JSON}"
 
+DISCONNECT_MSG_PREFIX=$'\x03\x04'
+DISCONNECT_MSG_JSON="${CONNECT_JSON}"
+DISCONNECT_MSG="${DISCONNECT_MSG_PREFIX}${DISCONNECT_MSG_JSON}"
+
 STOP_MSG_PREFIX=$'\x03\x07'
 STOP_MSG_JSON="${CONNECT_JSON}"
 STOP_MSG="${STOP_MSG_PREFIX}${STOP_MSG_JSON}"
+
 WSS=wss://${HEXA_IP}:7589/remotes?userhash=${USER_HASH}
 
 STATE=""
@@ -37,9 +43,12 @@ websocket() {
 
 bashtrap () {
 	if [ "${STATE}" == "CONNECTED" ]; then
-		echo "${STOP_MSG}" | websocket
+		echo "${DISCONNECT_MSG}" | websocket
 		STATE="DISCONNECTED"
 		echo "Disconnected"
+		echo "${STOP_MSG}" | websocket
+		STATE="STOPPED"
+		echo "Skill shutdown"
 	fi
 	exit 0
 }
