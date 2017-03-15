@@ -35,20 +35,33 @@ STOP_MSG="${STOP_MSG_PREFIX}${STOP_MSG_JSON}"
 
 WSS=wss://${HEXA_IP}:7589/remotes?userhash=${USER_HASH}
 
-STATE=""
+rm -frv /tmp/MINDSTATE
+set_state() {
+	echo -n "$1" > /tmp/MINDSTATE
+}
 
-websocket() {
+get_state() {
+	cat /tmp/MINDSTATE
+}
+
+pinging_websocket() {
 	wsta --ping ${PING_FREQUENCY} --ping-msg ${PING_MSG} ${WSS} 2> /dev/null
 }
 
+websocket() {
+	wsta ${WSS} 2> /dev/null
+}
+
 bashtrap () {
-	if [ "${STATE}" == "CONNECTED" ]; then
-		echo "${DISCONNECT_MSG}" | websocket
-		STATE="DISCONNECTED"
-		echo "Disconnected"
-		echo "${STOP_MSG}" | websocket
-		STATE="STOPPED"
-		echo "Skill shutdown"
+	if [ "`get_state`" == "CONNECTED" ]; then
+		echo ""
+		echo "Ctrl+c again to exit"
+		disconnectstop=("${DISCONNECT_MSG}" "${STOP_MSG}")
+		for msg in "${disconnectstop[@]}"
+		do
+			echo "${msg}"
+		done | websocket &> /dev/null
+		set_state "STOPPED"
 	fi
 	exit 0
 }
@@ -87,13 +100,13 @@ log_message() {
 }
 
 connect() {
-	STATE="CONNECTING"
+	set_state "CONNECTING"
 	echo "Connecting"
-	echo "${CONNECT_MSG}" | websocket | while read -r line; do 
+	echo "${CONNECT_MSG}" | pinging_websocket | while read -r line; do 
 		json=`echo "${line:2}"`
 		if [ ! -z "${json}" ] && [ "${json}" != "null" ]; then
-			if [ "${STATE}" == "CONNECTING" ]; then
-				STATE="CONNECTED"
+			if [ "`get_state`" == "CONNECTING" ]; then
+				set_state "CONNECTED"
 				echo -e "${GREEN}Connected !${NOCOLOR}"
 			fi
 			log_message "${json}"
@@ -115,9 +128,9 @@ echo_progress() {
 }
 
 install() {
-	STATE="INSTALLING"
+	set_state "INSTALLING"
 	echo "Installation started"
-	echo ${INSTALL_MSG} | websocket | while read -r line; do 
+	echo ${INSTALL_MSG} | pinging_websocket | while read -r line; do 
 		json=`echo "${line:2}"`
 		# Handle download and install status
 		progress=`echo "${json}" | jq -r ".progress"`
