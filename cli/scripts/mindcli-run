@@ -3,6 +3,10 @@ set -eu
 MPK=$1
 LOCAL_IP=$2
 HEXA_IP=$3
+if [ ! -f ${MPK} ]; then
+	echo "Can't find any .mpk file to run"
+	exit 1
+fi
 mindcli-serve ${MPK} &
 mindcli-remote ${HEXA_IP} &
 sleep 1

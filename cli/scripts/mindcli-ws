@@ -1,65 +1,139 @@
 #!/usr/bin/env bash
 set -eu
+trap bashtrap INT
+
+# Constants
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NOCOLOR='\033[0;0m'
+
+# Collect environment variables and arguments
 LOCAL_IP=$1
 HEXA_IP=$2
+MPK_MD5=`md5sum skill.mpk`
+MANIFEST=`cat /skill/manifest.json 2> /dev/null`
+SKILLID=`echo $MANIFEST | jq -r ".skillID"`
+
 PING_MSG=$'\x02\x01'
+PING_FREQUENCY=5
 INSTALL_MSG_PREFIX=$'\x03\x0F'
-md5=($(md5sum skill.mpk))
-MERGED_JSON=`echo "{\"url\": \"${LOCAL_IP}/$md5\"}" $(cat manifest.json) | jq add -s`
+INSTALL_JSON=`echo "{\"url\": \"${LOCAL_IP}/${MPK_MD5}\"}" ${MANIFEST} | jq add -s`
+INSTALL_MSG="${INSTALL_MSG_PREFIX}${INSTALL_JSON}"
+
+CONNECT_MSG_PREFIX=$'\x03\x01'
+CONNECT_JSON=`echo "{\"skillID\": \"${SKILLID}\"}"`
+CONNECT_MSG="${CONNECT_MSG_PREFIX}${CONNECT_JSON}"
+
+STOP_MSG_PREFIX=$'\x03\x07'
+STOP_MSG_JSON="${CONNECT_JSON}"
+STOP_MSG="${STOP_MSG_PREFIX}${STOP_MSG_JSON}"
 WSS=wss://${HEXA_IP}:7589/remotes?userhash=${USER_HASH}
-LOG=/tmp/wsmessages
-cached_batterymsg=""
-rm -f ${LOG}
-echo ${INSTALL_MSG_PREFIX}${MERGED_JSON} | \
-	wsta --ping 5 --ping-msg $PING_MSG ${WSS} 2> /dev/null 1> >(while read -r line; do 
-	json=`echo ${line:2}`
-	# Handle download and install status
-	progress=`echo $json | jq -r ".progress"`
-	status=`echo $json | jq -r ".status"` 
-	message=`echo $json | jq -r ".message"` 
-	battery=`echo $json | jq -r ".battery"` 
-	temperature=`echo $json | jq -r ".temperature"` 
-	chargingStatus=`echo $json | jq -r ".chargingStatus"` 
-	level=`echo $json | jq -r ".level"` 
-	if [ ! -z "$status" ] && [ "$status" != "null" ] && [ ! -z "$progress" ]; then
-		if [ "${status,,}" == "succeed" ]; then
-			echo -e "${GREEN}Installation successful !${NOCOLOR}"
-			echo "Point your browser to: http://localhost:7597"
-			continue
-		fi
-		if [ "${status}" == "downloading" ]; then
-			status="Uploading"
-		fi
-		if [ "${status}" == "installing" ]; then
-			status="Installing"
-		fi
-		if [ "${status}" == "failed" ]; then
-			status="${RED}Installation failed ! ${NOCOLOR}"
-		fi
-		echo -e "$(printf "$status %.0f" $(echo -e "$progress * 100" | bc -l))%"
-		if [ ! -z "$message" ]; then
-			echo $message
-		fi
-		continue
+
+STATE=""
+
+websocket() {
+	wsta --ping ${PING_FREQUENCY} --ping-msg ${PING_MSG} ${WSS} 2> /dev/null
+}
+
+bashtrap () {
+	if [ "${STATE}" == "CONNECTED" ]; then
+		echo "${STOP_MSG}" | websocket
+		STATE="DISCONNECTED"
+		echo "Disconnected"
 	fi
-	if [ ! -z "$chargingStatus" ] && [ "$chargingStatus" != "null" ]; then
-		if [ "$chargingStatus" == "chargerIn" ]; then
-			charging="[Charging]"
-		else
-			charging="[Not charging]"
-		fi
-		batterymsg=`echo "Battery: $(echo "$battery* 100" | bc -l)% $charging"`
-		if [ "$batterymsg" != "$cached_batterymsg" ]; then
-			cached_batterymsg=$batterymsg
-			echo $batterymsg
-		fi
-		continue
+	exit 0
+}
+
+cachedBatteryMsg=""
+echo_battery() {
+	batteryMsg=`echo "Battery: $(echo "$1* 100" | bc -l)% $2"`
+	if [ "${batteryMsg}" != "$cachedBatteryMsg" ]; then
+		cachedBatteryMsg=${batteryMsg}
+		echo "${cachedBatteryMsg}"
 	fi
-	if [ ! -z "$level" ] && [ "$level" != "null" ]; then
-		echo $message
-		continue
-	fi	
-done)
+}
+
+log_battery() {
+	json=$1
+	battery=`echo ${json} | jq -r ".battery"` 
+ 	temperature=`echo ${json} | jq -r ".temperature"` 
+ 	chargingStatus=`echo ${json} | jq -r ".chargingStatus"` 
+	case "${chargingStatus}" in
+		"chargerIn")
+			echo_battery "${battery}" "[Charging]"
+			;;	
+		"chargerOut") 
+			echo_battery "${battery}" "[Not charging]"
+			;;
+	esac
+}
+
+log_message() {
+	json=$1
+	level=`echo "${json}" | jq -r ".level"` 
+	message=`echo "${json}" | jq -r ".message"` 
+	if [ ! -z "${level}" ] && [ "${level}" != "null" ]; then
+		echo "${message}"
+	fi
+}
+
+connect() {
+	STATE="CONNECTING"
+	echo "Connecting"
+	echo "${CONNECT_MSG}" | websocket | while read -r line; do 
+		json=`echo "${line:2}"`
+		if [ ! -z "${json}" ] && [ "${json}" != "null" ]; then
+			if [ "${STATE}" == "CONNECTING" ]; then
+				STATE="CONNECTED"
+				echo -e "${GREEN}Connected !${NOCOLOR}"
+			fi
+			log_message "${json}"
+			log_battery "${json}"
+		fi
+	done
+}
+
+installation_failed() {
+	echo -e "${RED}Installation failed !${NOCOLOR}"
+	echo "$1"
+	exit 1
+}
+
+echo_progress() {
+	status=$1
+	progress=$2
+	echo -e "$(printf "${status} %.0f" $(echo -e "${progress} * 100" | bc -l))%"
+}
+
+install() {
+	STATE="INSTALLING"
+	echo "Installation started"
+	echo ${INSTALL_MSG} | websocket | while read -r line; do 
+		json=`echo "${line:2}"`
+		# Handle download and install status
+		progress=`echo "${json}" | jq -r ".progress"`
+		status=`echo "${json}" | jq -r ".status"` 
+		message=`echo "${json}" | jq -r ".message"` 
+		case "${status,,}" in
+			"succeed")
+				echo -e "${GREEN}Installation successful !${NOCOLOR}"
+				echo "Point your browser to: http://localhost:7597"
+				connect
+				break
+				;;	
+			"downloading") 
+				status="Uploading"
+				echo_progress "${status}" "${progress}"
+				;;
+			"installing") 
+				status="Installing"
+				echo_progress "${status}" "${progress}"
+				;;
+			"failed") 
+				installation_failed "${message}"
+				break
+				;;
+		esac
+	done
+}
+install

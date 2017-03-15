@@ -2,7 +2,7 @@
 set -eu
 HEXA_IP=$1
 mkdir -p /skill
-unzip -qq skill.mpk -d /skill
+unzip -qq skill.mpk -d /skill 
 js="HEXA_IP=\"${HEXA_IP}\";
 HEXA_PORT=7588;
 mind = new Mind({userhash: \"$USER_HASH\"});"
