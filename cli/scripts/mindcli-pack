@@ -3,13 +3,13 @@ set -eu
 if [ -e manifest.json ] && [ -e robot/skill ] && [ -e remote ]; then
 	# Validate manifest.json
 	SKILLID=`cat manifest.json | jq -r ".skillID"`
-	VERSION=`cat manifest.json | jq -r ".versionName"`
+	VERSION=`cat manifest.json | jq -r ".version"`
 	if [ "${SKILLID}" == "null" ]; then
 		echo "skillID in manifest.json can not be empty"
 		exit 1
 	fi
 	if [ "${VERSION}" == "null" ]; then
-		echo "versionName in manifest.json can not be empty"
+		echo "version in manifest.json can not be empty"
 		exit 1
 	fi
 	zip -r -qq /tmp/skill.mpk manifest.json remote/ robot/skill robot/deps robot/assets robot/deps 
