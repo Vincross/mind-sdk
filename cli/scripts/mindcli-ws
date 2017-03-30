@@ -33,6 +33,10 @@ STOP_MSG_PREFIX=$'\x03\x07'
 STOP_MSG_JSON="${CONNECT_JSON}"
 STOP_MSG="${STOP_MSG_PREFIX}${STOP_MSG_JSON}"
 
+SET_LOGLEVEL_PREFIX=$'\x05\x02'
+SET_LOGLEVEL_JSON=`echo "{\"level\": \"debug\"}"`
+SET_LOGLEVEL_MSG="${SET_LOGLEVEL_PREFIX}${SET_LOGLEVEL_JSON}"
+
 WSS=wss://${HEXA_IP}:7589/remotes?userhash=${USER_HASH}
 
 rm -frv /tmp/MINDSTATE
@@ -95,14 +99,22 @@ log_message() {
 	level=`echo "${json}" | jq -r ".level"` 
 	message=`echo "${json}" | jq -r ".message"` 
 	if [ ! -z "${level}" ] && [ "${level}" != "null" ]; then
-		echo "${message}"
+		if [ "$message" != "null" ]	#setlevel order will return {"level":"debug"} with no message
+		then
+			echo "${message}"
+		fi
 	fi
+}
+
+connect_msgs() {
+	echo ${SET_LOGLEVEL_MSG}
+	echo ${CONNECT_MSG}
 }
 
 connect() {
 	set_state "CONNECTING"
 	echo "Connecting"
-	echo "${CONNECT_MSG}" | pinging_websocket | while read -r line; do 
+	connect_msgs | pinging_websocket | while read -r line; do 
 		json=`echo "${line:2}"`
 		if [ ! -z "${json}" ] && [ "${json}" != "null" ]; then
 			if [ "`get_state`" == "CONNECTING" ]; then
