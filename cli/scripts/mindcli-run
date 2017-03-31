@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 set -eu
-MPK=$1
-LOCAL_IP=$2
-HEXA_IP=$3
-if [ ! -f ${MPK} ]; then
-	echo "Can't find any .mpk file to run"
-	exit 1
-fi
-mindcli-serve ${MPK} &
-mindcli-remote ${HEXA_IP} &
-sleep 1
-mindcli-ws ${LOCAL_IP} ${HEXA_IP} 
+
+run_skill() {
+	MPK=$1
+	LOCAL_IP=$2
+	HEXA_IP=$3
+	if [ ! -f ${MPK} ]; then
+		echo "Can't find any .mpk file to run, pack first."
+		mindcli-pack
+		echo "Finish pack skill, run the skill."
+	fi
+	mindcli-serve ${MPK} &
+	mindcli-remote ${HEXA_IP} &
+	sleep 1
+	mindcli-ws ${LOCAL_IP} ${HEXA_IP}
+}
+
+run_skill $1 $2 $3
