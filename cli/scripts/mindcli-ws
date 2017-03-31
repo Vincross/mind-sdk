@@ -49,7 +49,7 @@ get_state() {
 }
 
 pinging_websocket() {
-	wsta --ping ${PING_FREQUENCY} --ping-msg ${PING_MSG} ${WSS} 2> /dev/null
+	wsta -I --ping ${PING_FREQUENCY} --ping-msg ${PING_MSG} ${WSS} 2> /dev/null
 }
 
 websocket() {
@@ -139,6 +139,21 @@ echo_progress() {
 	echo -e "$(printf "${status} %.0f" $(echo -e "${progress} * 100" | bc -l))%"
 }
 
+check_auth() {
+	wsta -I ${WSS} 2>stdout | while read -r line; do
+		rm "stdout"
+		install
+	done
+
+	ret=$`cat stdout| grep 403`
+	if [ "$ret"x != ""x ] ; then
+		echo ""
+		echo "Please check the correct user has logged in"
+		echo ""
+	fi
+	rm "stdout"
+}
+
 install() {
 	set_state "INSTALLING"
 	echo "Installation started"
@@ -170,4 +185,4 @@ install() {
 		esac
 	done
 }
-install
+check_auth
