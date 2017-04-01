@@ -139,6 +139,20 @@ echo_progress() {
 	echo -e "$(printf "${status} %.0f" $(echo -e "${progress} * 100" | bc -l))%"
 }
 
+run_ws() {
+	wsta -I ${WSS} 2>&1 | while read -r line; do
+		case "${line}" in
+			*"403 Forbidden"*)
+				echo "You havn't configured Vincross ID or the configured Vincross ID is not a trusted user of this HEXA."
+				exit
+				;;
+			*"101 Switching Protocols"*)
+				install
+				;;
+		esac
+	done
+}
+
 install() {
 	set_state "INSTALLING"
 	echo "Installation started"
@@ -170,4 +184,4 @@ install() {
 		esac
 	done
 }
-install
+run_ws
