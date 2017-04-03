@@ -5,7 +5,7 @@ CACHEFILE := .xcompile
 
 .PHONY : build push attach clean
 
-${CACHEFILE} : ${DOCKERFILE)}
+${CACHEFILE} : ${DOCKERFILE}
 	docker build -t ${REGISTRY}/${NAME} .
 	touch ${CACHEFILE}
 
