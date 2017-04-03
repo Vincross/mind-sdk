@@ -6,7 +6,7 @@ cat >/tmp/Caddyfile <<EOL
 root .
 rewrite / {
         regexp .*
-        to /$1
+        to /${MPK}
 }
 EOL
 caddy -quiet -conf="/tmp/Caddyfile"
