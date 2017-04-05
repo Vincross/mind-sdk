@@ -4,8 +4,8 @@ MPK=$1
 LOCAL_IP=$2
 HEXA_IP=$3
 if [ ! -f ${MPK} ]; then
-	echo "Can't find any .mpk file to run"
-	exit 1
+	echo "Can't find any .mpk file to run, pack .mpk file first"
+	mindcli-pack
 fi
 mindcli-serve ${MPK} &
 mindcli-remote ${HEXA_IP} &
