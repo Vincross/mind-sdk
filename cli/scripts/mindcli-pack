@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -eu
-if [ -e manifest.json ] && [ -e robot/skill ] && [ -e remote ]; then
+
+pack_business() {
 	# Validate manifest.json
 	SKILLID=`cat manifest.json | jq -r ".skillID"`
 	VERSION=`cat manifest.json | jq -r ".version"`
@@ -17,6 +18,17 @@ if [ -e manifest.json ] && [ -e robot/skill ] && [ -e remote ]; then
 	if [ -n "${MIND_USER}" ]; then
 		chown ${MIND_USER}:${MIND_USER} skill.mpk 
 	fi
-else
-	echo "No skill to pack. Did you build it yet?"
-fi
+}
+
+pack_skill() {
+	if [ -e manifest.json ] && [ -e robot/skill ] && [ -e remote ]; then
+		pack_business
+	else
+		echo "No skill to pack. Build first."
+		mindcli-build
+		echo "Build succ, pack the skill."
+		pack_business
+	fi
+}
+
+pack_skill
