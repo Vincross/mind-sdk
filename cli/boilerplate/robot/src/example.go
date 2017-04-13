@@ -30,7 +30,7 @@ func (d *BoilerplateSkillName) OnDisconnect() {
 	// Use this method to do something when the remote disconnected.
 }
 
-func (d *BoilerplateSkillName) OnRecvJson(data []byte) {
+func (d *BoilerplateSkillName) OnRecvJSON(data []byte) {
 	// Use this method to do something when skill receive json data from remote client.
 }
 
