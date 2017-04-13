@@ -33,6 +33,8 @@ STOP_MSG_PREFIX=$'\x03\x07'
 STOP_MSG_JSON="${CONNECT_JSON}"
 STOP_MSG="${STOP_MSG_PREFIX}${STOP_MSG_JSON}"
 
+DISCONNECT_STOP_MSGS=("${DISCONNECT_MSG}" "${STOP_MSG}")
+
 SET_LOGLEVEL_PREFIX=$'\x05\x02'
 SET_LOGLEVEL_JSON=`echo "{\"level\": \"debug\"}"`
 SET_LOGLEVEL_MSG="${SET_LOGLEVEL_PREFIX}${SET_LOGLEVEL_JSON}"
@@ -57,15 +59,25 @@ websocket() {
 }
 
 bashtrap () {
+	trap '' 2
 	if [ "`get_state`" == "CONNECTED" ]; then
 		echo ""
-		echo "Ctrl+c again to exit"
-		disconnectstop=("${DISCONNECT_MSG}" "${STOP_MSG}")
-		for msg in "${disconnectstop[@]}"
+		ackCount=0
+		for msg in "${DISCONNECT_STOP_MSGS[@]}"
 		do
 			echo "${msg}"
-		done | websocket &> /dev/null
-		set_state "STOPPED"
+		done | websocket | while read -r line ; do
+			case "${line}" in
+			*"skillID"*)
+				ackCount=$[$ackCount+1]
+				;;
+			esac
+			if [ $ackCount -eq 2 ] ; then
+				set_state "STOPPED"
+				echo "Skill stopped."
+				kill -PIPE $$
+			fi
+		done
 	fi
 	exit 0
 }
@@ -143,7 +155,7 @@ run_ws() {
 	wsta -I ${WSS} 2>&1 | while read -r line; do
 		case "${line}" in
 			*"403 Forbidden"*)
-				echo "You havn't configured Vincross ID or the configured Vincross ID is not a trusted user of this HEXA."
+				echo "You haven't configured Vincross ID or the configured Vincross ID is not a trusted user of this HEXA."
 				exit
 				;;
 			*"101 Switching Protocols"*)
