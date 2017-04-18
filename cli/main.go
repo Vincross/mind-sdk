@@ -48,6 +48,7 @@ func newMindCommand(cli *mindcli.MindCli) *cobra.Command {
 	mindCmd.AddCommand(cmd.NewBuildCommand(cli))
 	mindCmd.AddCommand(cmd.NewPackCommand(cli))
 	mindCmd.AddCommand(cmd.NewGetDefaultRobotCommand(cli))
+	mindCmd.AddCommand(cmd.NewGetDefaultRobotIPCommand(cli))
 	mindCmd.AddCommand(cmd.NewInitCommand(cli))
 	mindCmd.AddCommand(cmd.NewLoginCommand(cli))
 	mindCmd.AddCommand(cmd.NewRunCommand(cli))

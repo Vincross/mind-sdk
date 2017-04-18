@@ -209,3 +209,7 @@ func (mindcli *MindCli) SetDefaultRobotName(robotName string) error {
 func (mindcli *MindCli) DefaultRobotName() string {
 	return mindcli.userConfig.DefaultRobotName
 }
+
+func (mindcli *MindCli) DefaultRobotIP() string {
+	return mindcli.RobotByName(mindcli.userConfig.DefaultRobotName).IP
+}
