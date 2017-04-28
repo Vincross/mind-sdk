@@ -9,5 +9,6 @@ mind = new Mind({userhash: \"$USER_HASH\"});"
 printf "$js$(cat /.go/src/mind/sdk/js/mind-framework.js)" > /skill/remote/mind-framework.js
 cat >/skill/remote/Caddyfile <<EOL
 0.0.0.0:${SERVE_REMOTE_PORT}
+header / Cache-Control "no-cache, no-store, must-revalidate"
 EOL
 cd /skill/remote && caddy -quiet
