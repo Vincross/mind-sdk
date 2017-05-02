@@ -211,5 +211,9 @@ func (mindcli *MindCli) DefaultRobotName() string {
 }
 
 func (mindcli *MindCli) DefaultRobotIP() string {
-	return mindcli.RobotByName(mindcli.userConfig.DefaultRobotName).IP
+	robot := mindcli.RobotByName(mindcli.userConfig.DefaultRobotName)
+	if robot == nil {
+		return ""
+	}
+	return robot.IP
 }
