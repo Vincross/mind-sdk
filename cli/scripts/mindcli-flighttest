@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eu
+trap exit INT
+MPK=$1
+LOCALIP=$2
+PORT=$3
+if [ ! -f ${MPK} ]; then
+	echo "Can't find any .mpk file to flight test"
+	exit 1
+fi
+mindcli-serve ${MPK} &
+sleep 1
+echo "Open the HEXA app and navigate to Skill Store -> Scan QR Code -> Enter a link,"
+echo "and enter the following address:" 
+echo "http://${LOCALIP}:${PORT}"
+while :
+do
+	sleep 1
+done

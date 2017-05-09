@@ -217,3 +217,17 @@ func (mindcli *MindCli) DefaultRobotIP() string {
 	}
 	return robot.IP
 }
+
+func (mindcli *MindCli) RunFlightTest(args ...string) {
+	ips, err := GetLocalIPs()
+	if err != nil || len(ips) < 1 {
+		fmt.Println("Cannot find a local IP, check your network settings.")
+		return
+	}
+	mindcli.X(append([]string{
+		"mindcli-flighttest",
+		"skill.mpk",
+		fmt.Sprintf("%v", ips[0]),
+		fmt.Sprintf("%v", mindcli.config.ServeMPKPort),
+	}, args...)...)
+}
