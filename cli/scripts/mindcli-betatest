@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eu
+trap exit INT
+
+MPK=$1
+LocalIP=$2
+Port=$3
+if [ ! -f ${MPK} ]; then
+	echo "Can't find any .mpk file to mobile"
+	exit 1
+fi
+mindcli-serve ${MPK} &
+sleep 1
+echo "Please enter http://$LocalIP:$Port at Skill Store > Scan QR code > Test Skill in the HEXA App."
+
+while :
+do
+	sleep 1
+done
