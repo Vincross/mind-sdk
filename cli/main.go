@@ -56,7 +56,7 @@ func newMindCommand(cli *mindcli.MindCli) *cobra.Command {
 	mindCmd.AddCommand(cmd.NewSetDefaultRobotCommand(cli))
 	mindCmd.AddCommand(cmd.NewUpgradeCommand(cli))
 	mindCmd.AddCommand(cmd.NewXCommand(cli))
-	mindCmd.AddCommand(cmd.NewFlighttestCommand(cli))
+	mindCmd.AddCommand(cmd.NewFlightTestCommand(cli))
 	return mindCmd
 }
 

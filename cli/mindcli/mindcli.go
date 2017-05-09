@@ -218,14 +218,10 @@ func (mindcli *MindCli) DefaultRobotIP() string {
 	return robot.IP
 }
 
-func (mindcli *MindCli) RunFlighttest(args ...string) {
+func (mindcli *MindCli) RunFlightTest(args ...string) {
 	ips, err := GetLocalIPs()
-	if err != nil {
-		fmt.Println("Get local ips err:", err)
-		return
-	}
-	if len(ips) == 0 {
-		fmt.Println("No available ip, check your network and try again.")
+	if err != nil || len(ips) < 1 {
+		fmt.Println("Cannot find a local IP, check your network settings.")
 		return
 	}
 	mindcli.X(append([]string{

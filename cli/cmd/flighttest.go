@@ -6,15 +6,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func NewFlighttestCommand(cli *mindcli.MindCli) *cobra.Command {
+func NewFlightTestCommand(cli *mindcli.MindCli) *cobra.Command {
 	return &cobra.Command{
 		Use:   "flight-test",
-		Short: "Install Skill in the robot's app",
-		Long: "Run mind flight-test, then mind cli will return an address for installing the remote part of the Skill in the robot's app, a.k.a. the HEXA App. \n" +
-			"Open the HEXA App, go to Skill Store -> Scan QR Code -> Enter a link, and type in the address mind cli returned, \n" +
-			"then the app will download and install the remote part accordingly",
+		Short: "Flight test a Skill on mobile device",
+		Long: "Open the HEXA app and navigate to : Skill Store -> Scan QR code -> Enter a link,\n" +
+			"and type in the address that this command returns.\n" +
+			"The HEXA app will then download and install the remote part of the Skill from your/this PC.",
 		Run: func(cmd *cobra.Command, args []string) {
-			cli.RunFlighttest(args...)
+			cli.RunFlightTest(args...)
 		},
 	}
 }
