@@ -1,5 +1,5 @@
 # MIND SDK
-![](https://img.shields.io/badge/master-0.4.1-green.svg?style=flat)
+![](https://img.shields.io/badge/master-0.4.5-green.svg?style=flat)
 
 This repository contains everything needed to develop *Skills* for the [HEXA](https://www.vincross.com/hexa)
 
