@@ -19,3 +19,7 @@ PeripheralsSkill implements a skill that shows how to use the peripherals interf
 ## [OpenCVSkill](OpenCVSkill)
 OpenCVSkill is an example project showing how to cross-compile C++ libraries and bind them to Golang for Skill development. 
 This Skill makes the HEXA stand up when it detects human faces.
+
+## [ROSSkill](ROSSkill)
+ROSSkill implements a *skill* that shows how to publish images to an ROS topic via rosserial.
+
