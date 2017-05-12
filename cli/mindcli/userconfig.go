@@ -9,6 +9,7 @@ import (
 type UserConfig struct {
 	DefaultRobotName string  `json:"DefaultRobotName"`
 	Robots           []Robot `json:"Robots"`
+	DockerImage      string  `json:"DockerImage"`
 	path             string
 	authFile         string
 	userHash         string
