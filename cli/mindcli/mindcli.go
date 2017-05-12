@@ -28,6 +28,15 @@ type MindCli struct {
 }
 
 func NewMindCli(robotScanner *RobotScanner, userConfig *UserConfig, config *MindCliConfig) *MindCli {
+	if userConfig.DockerImage != "" {
+		imgs := strings.Split(userConfig.DockerImage, "/")
+		if len(imgs) != 2 {
+			fmt.Println("Docker image error.")
+			os.Exit(-1)
+		}
+		config.Registry = imgs[0]
+		config.Image = imgs[1]
+	}
 	mindcli := &MindCli{
 		RobotScanner: robotScanner,
 		userConfig:   userConfig,
