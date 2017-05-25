@@ -1,5 +1,17 @@
 # Example Skills
 
+## Building And Running 
+In order to build and run these examples you need to [install the MIND SDK](https://www.vincross.com/developer/introduction/getting-started/macos-&-linux)
+and configure it for your [HEXA](https://www.vincross.com/hexa).
+
+Example:
+```
+$ cd SensorWalkSkill
+$ mind build
+$ mind pack
+$ mind run
+``` 
+
 ## [SensorWalkSkill](SensorWalkSkill)
 SensorWalkSkill makes the HEXA to walk forward and change direction when encountering obstacles.
 
