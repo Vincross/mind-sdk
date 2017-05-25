@@ -1,6 +1,6 @@
 # Example Skills
 
-## Building And Running 
+## Building and running
 In order to build and run these examples you need to [install the MIND SDK](https://www.vincross.com/developer/introduction/getting-started/macos-&-linux)
 and configure it for your [HEXA](https://www.vincross.com/hexa).
 
