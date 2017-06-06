@@ -8,5 +8,6 @@ rewrite / {
         regexp .*
         to /${MPK}
 }
+timeouts none
 EOL
 caddy -quiet -conf="/tmp/Caddyfile"
