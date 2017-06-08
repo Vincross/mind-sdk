@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -eu
-MPK=$1
-LOCAL_IP=$2
-HEXA_IP=$3
+NO_INSTALL=$1
+MPK=$2
+LOCAL_IP=$3
+HEXA_IP=$4
 if [ ! -f ${MPK} ]; then
 	echo "Can't find any .mpk file to run"
 	exit 1
@@ -10,4 +11,4 @@ fi
 mindcli-serve ${MPK} &
 mindcli-remote ${HEXA_IP} &
 sleep 1
-mindcli-ws ${LOCAL_IP} ${HEXA_IP} 
+mindcli-ws ${LOCAL_IP} ${HEXA_IP} ${NO_INSTALL}
