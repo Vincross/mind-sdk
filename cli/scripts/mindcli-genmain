@@ -8,7 +8,7 @@ import "os/signal"
 import "syscall"
 import "mind/core/framework"
 import "mind/core/framework/skill"
-import "mind/libraries/unix"
+import "mind/utils/unix"
 import SKILL "skill/robot/src"
 func main() {
   if err := unix.ExitWhenParentDead(); err != nil {
