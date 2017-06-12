@@ -8,8 +8,22 @@ RED='\033[0;31m'
 NOCOLOR='\033[0;0m'
 
 # Collect environment variables and arguments
+NO_INSTALL=false
+
+while getopts "n" opt; do
+	case $opt in
+		n)
+			NO_INSTALL=true
+			shift
+			;;
+		\?) 
+			shift
+			;;
+	esac
+done
 LOCAL_IP=$1
 HEXA_IP=$2
+
 MPK_MD5=`md5sum skill.mpk`
 MANIFEST=`cat /skill/manifest.json 2> /dev/null`
 SKILLID=`echo $MANIFEST | jq -r ".skillID"`
@@ -159,7 +173,11 @@ run_ws() {
 				exit
 				;;
 			*"101 Switching Protocols"*)
-				install
+				if [ ${NO_INSTALL} == true ];then
+					connect
+				else
+					install
+				fi
 				;;
 		esac
 	done
