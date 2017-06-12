@@ -140,7 +140,7 @@ func (mindcli *MindCli) XOutput(args ...string) string {
 	return mindcli.execDockerOutput(mindcli.dockerXArgs(args...))
 }
 
-func (mindcli *MindCli) RunSkill(args ...string) {
+func (mindcli *MindCli) RunSkill(noInstall bool, args ...string) {
 	var robot *Robot
 	if len(args) < 1 {
 		robot = mindcli.RobotByName(mindcli.DefaultRobotName())
@@ -161,11 +161,17 @@ func (mindcli *MindCli) RunSkill(args ...string) {
 		os.Exit(-1)
 	}
 	ip, _ := GetLocalIPByNeighbourIP(robot.IP)
-	mindcli.X(append([]string{
-		"mindcli-run",
+	xParams := []string{"mindcli-run"}
+	if noInstall {
+		xParams = append(xParams, "-n")
+	}
+	xParams = append(xParams,
 		"skill.mpk",
 		fmt.Sprintf("http://%s:%d", ip.String(), mindcli.config.ServeMPKPort),
-		robot.IP}, args...)...)
+		fmt.Sprintf("%v", robot.IP),
+	)
+	mindcli.X(append(xParams, args...)...)
+
 }
 
 func (mindcli *MindCli) Login(email, pass string) error {
