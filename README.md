@@ -3,7 +3,7 @@
 
 This repository contains everything needed to develop *Skills* for the [HEXA](https://www.vincross.com/hexa)
 
-Check out the [Introduction and Getting Started guides](https://www.vincross.com/developer/introduction/mind-overview)
+Check out the [Introduction and Getting Started guides](https://developer.vincross.com/developer/introduction/mind-overview)
 
 
 ## [MIND Command-line Interface](cli)
