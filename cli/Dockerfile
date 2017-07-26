@@ -12,7 +12,7 @@ RUN wget https://github.com/mholt/caddy/releases/download/v0.9.5/caddy_linux_amd
     rm -fr caddy_linux_amd64.tar.gz
 # Add MIND SDK
 RUN mkdir -p /.go
-ENV MIND_VERSION 0.5.1
+ENV MIND_VERSION 0.5.2
 RUN wget https://cdn-static.vincross.com/downloads/mind/${MIND_VERSION}/mind.tar.gz
 RUN tar -xzf mind.tar.gz -C /.go && rm mind.tar.gz
 # Add boilerplate code for `mind init`
