@@ -43,7 +43,7 @@ func main() {
 func newMindCommand(cli *mindcli.MindCli) *cobra.Command {
 	var mindCmd = &cobra.Command{
 		Use:   "mind",
-		Short: "MIND Command-line Interface v0.5.1",
+		Short: "MIND Command-line Interface v0.5.2",
 	}
 	mindCmd.AddCommand(cmd.NewBuildCommand(cli))
 	mindCmd.AddCommand(cmd.NewPackCommand(cli))
