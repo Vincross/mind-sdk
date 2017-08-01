@@ -28,8 +28,8 @@ func NewSkill() skill.Interface {
 func ready() {
 	hexabody.Stand()
 	hexabody.MoveHead(0.0, 1)
-	hexabody.MoveLeg(2, hexabody.NewLegPosition(-100, 50.0, 70.0), 1)
-	hexabody.MoveLeg(5, hexabody.NewLegPosition(100, 50.0, 70.0), 1)
+	hexabody.MoveLeg(2, hexabody.NewLegPosition().SetCoordinates(-100, 50.0, 70.0), 1)
+	hexabody.MoveLeg(5, hexabody.NewLegPosition().SetCoordinates(100, 50.0, 70.0), 1)
 	hexabody.MoveJoint(0, 1, 90, 1)
 	hexabody.MoveJoint(0, 2, 45, 1)
 	hexabody.MoveJoint(1, 1, 90, 1)
