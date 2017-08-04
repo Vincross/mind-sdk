@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"net"
 	"os"
 	"os/exec"
 	"os/user"
@@ -140,7 +141,7 @@ func (mindcli *MindCli) XOutput(args ...string) string {
 	return mindcli.execDockerOutput(mindcli.dockerXArgs(args...))
 }
 
-func (mindcli *MindCli) RunSkill(noInstall bool, args ...string) {
+func (mindcli *MindCli) RunSkill(noInstall bool, robotIp string, args ...string) {
 	var robot *Robot
 	if len(args) < 1 {
 		robot = mindcli.RobotByName(mindcli.DefaultRobotName())
@@ -165,10 +166,17 @@ func (mindcli *MindCli) RunSkill(noInstall bool, args ...string) {
 	if noInstall {
 		xParams = append(xParams, "-n")
 	}
+	if robotIp == "" {
+		robotIp = robot.IP
+	}
+	if ret := net.ParseIP(robotIp); ret == nil {
+		fmt.Println("The IP address you just typed does NOT meet the standard ipv4 format.")
+		return
+	}
 	xParams = append(xParams,
 		"skill.mpk",
 		fmt.Sprintf("http://%s:%d", ip.String(), mindcli.config.ServeMPKPort),
-		fmt.Sprintf("%v", robot.IP),
+		fmt.Sprintf("%v", robotIp),
 	)
 	mindcli.X(append(xParams, args...)...)
 

@@ -55,6 +55,9 @@ SET_LOGLEVEL_MSG="${SET_LOGLEVEL_PREFIX}${SET_LOGLEVEL_JSON}"
 
 WSS=wss://${HEXA_IP}:7589/remotes?userhash=${USER_HASH}
 
+CHECK_ADDRESS_ERROR="The corresponding robot of the IP address you entered did NOT exist or its service was NOT available."
+CHECK_USER_ERROR="You haven't configured Vincross ID or the configured Vincross ID is not a trusted user of this HEXA."
+
 rm -frv /tmp/MINDSTATE
 set_state() {
 	echo -n "$1" > /tmp/MINDSTATE
@@ -165,11 +168,16 @@ echo_progress() {
 	echo -e "$(printf "${status} %.0f" $(echo -e "${progress} * 100" | bc -l))%"
 }
 
+check_address() {
+	nc -v -w 1 ${HEXA_IP} -z 7589 2>/dev/null || (echo ${CHECK_ADDRESS_ERROR} && exit -1)
+}
+
 run_ws() {
+	check_address
 	wsta -I ${WSS} 2>&1 | while read -r line; do
 		case "${line}" in
 			*"403 Forbidden"*)
-				echo "You haven't configured Vincross ID or the configured Vincross ID is not a trusted user of this HEXA."
+				echo ${CHECK_USER_ERROR}
 				exit
 				;;
 			*"101 Switching Protocols"*)
