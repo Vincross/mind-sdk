@@ -13,8 +13,7 @@ import (
 
 func NewDefaultMindCliConfig() *mindcli.MindCliConfig {
 	return &mindcli.MindCliConfig{
-		Registry:          "vincross",
-		Image:             "mindcli:latest",
+		Image:             "vincross/mindcli:latest",
 		ContainerSkillDir: "/go/src/skill",
 		ServeMPKPort:      8888,
 		ServeRemotePort:   7597,

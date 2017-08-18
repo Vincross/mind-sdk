@@ -15,7 +15,6 @@ import (
 )
 
 type MindCliConfig struct {
-	Registry          string
 	Image             string
 	ContainerSkillDir string
 	ServeMPKPort      int
@@ -30,13 +29,7 @@ type MindCli struct {
 
 func NewMindCli(robotScanner *RobotScanner, userConfig *UserConfig, config *MindCliConfig) *MindCli {
 	if userConfig.DockerImage != "" {
-		imgs := strings.Split(userConfig.DockerImage, "/")
-		if len(imgs) != 2 {
-			fmt.Println("Docker image error.")
-			os.Exit(-1)
-		}
-		config.Registry = imgs[0]
-		config.Image = imgs[1]
+		config.Image = userConfig.DockerImage
 	}
 	mindcli := &MindCli{
 		RobotScanner: robotScanner,
@@ -72,7 +65,7 @@ func (mindcli *MindCli) skillMountPoint() string {
 func (mindcli *MindCli) dockerUpgradeImageArgs() []string {
 	return []string{
 		"pull",
-		fmt.Sprintf("%s/%s", mindcli.config.Registry, mindcli.config.Image),
+		fmt.Sprintf("%s", mindcli.config.Image),
 	}
 }
 
@@ -100,7 +93,7 @@ func (mindcli *MindCli) dockerXArgs(args ...string) []string {
 		"-e", fmt.Sprintf("USER_HASH=%s", mindcli.userConfig.userHash),
 		"-e", fmt.Sprintf("SKILLDIR=%s", mindcli.config.ContainerSkillDir),
 		"-v", mindcli.skillMountPoint(),
-		fmt.Sprintf("%s/%s", mindcli.config.Registry, mindcli.config.Image),
+		fmt.Sprintf("%s", mindcli.config.Image),
 	}
 	return append(c, args...)
 }
