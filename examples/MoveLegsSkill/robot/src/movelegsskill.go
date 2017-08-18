@@ -11,7 +11,13 @@ import (
 	"os"
 
 	"mind/core/framework/drivers/hexabody"
+	"mind/core/framework/log"
 	"mind/core/framework/skill"
+)
+
+const (
+	FAST_DURATION = 80
+	SLOW_DURATION = 500
 )
 
 type MoveLegsSkill struct {
@@ -27,19 +33,20 @@ func NewSkill() skill.Interface {
 
 func ready() {
 	hexabody.Stand()
-	hexabody.MoveHead(0.0, 1)
-	hexabody.MoveLeg(2, hexabody.NewLegPosition().SetCoordinates(-100, 50.0, 70.0), 1)
-	hexabody.MoveLeg(5, hexabody.NewLegPosition().SetCoordinates(100, 50.0, 70.0), 1)
-	hexabody.MoveJoint(0, 1, 90, 1)
-	hexabody.MoveJoint(0, 2, 45, 1)
-	hexabody.MoveJoint(1, 1, 90, 1)
-	hexabody.MoveJoint(1, 2, 45, 1)
+	hexabody.MoveHead(0.0, FAST_DURATION)
+	// Using goroutines to make some commands be executed at the same time
+	go hexabody.MoveLeg(2, hexabody.NewLegPosition().SetCoordinates(-100, 50.0, 70.0), SLOW_DURATION)
+	hexabody.MoveLeg(5, hexabody.NewLegPosition().SetCoordinates(100, 50.0, 70.0), SLOW_DURATION)
+	go hexabody.MoveJoint(0, 1, 90, SLOW_DURATION)
+	hexabody.MoveJoint(0, 2, 45, SLOW_DURATION)
+	go hexabody.MoveJoint(1, 1, 90, FAST_DURATION)
+	hexabody.MoveJoint(1, 2, 45, FAST_DURATION)
 }
 
 func moveLegs(v float64) {
-	hexabody.MoveJoint(0, 1, 45*math.Sin(v*math.Pi/180)+70, 1)
-	hexabody.MoveJoint(0, 0, 35*math.Cos(v*math.Pi/180)+60, 1)
-	hexabody.MoveJoint(1, 1, 45*math.Cos(v*math.Pi/180)+70, 1)
+	go hexabody.MoveJoint(0, 1, 45*math.Sin(v*math.Pi/180)+70, FAST_DURATION)
+	go hexabody.MoveJoint(0, 0, 35*math.Cos(v*math.Pi/180)+60, FAST_DURATION)
+	hexabody.MoveJoint(1, 1, 45*math.Cos(v*math.Pi/180)+70, FAST_DURATION)
 }
 
 func (d *MoveLegsSkill) play() {
@@ -51,12 +58,15 @@ func (d *MoveLegsSkill) play() {
 			return
 		default:
 			moveLegs(v)
-			v += 1
+			v += 10
 		}
 	}
 }
 func (d *MoveLegsSkill) OnStart() {
-	hexabody.Start()
+	err := hexabody.Start()
+	if err != nil {
+		log.Error.Println("hexabody can't start:", err)
+	}
 }
 
 func (d *MoveLegsSkill) OnClose() {
