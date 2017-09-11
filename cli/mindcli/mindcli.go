@@ -135,32 +135,33 @@ func (mindcli *MindCli) XOutput(args ...string) string {
 }
 
 func (mindcli *MindCli) RunSkill(noInstall bool, robotIp string, args ...string) {
-	var robot *Robot
-	if len(args) < 1 {
-		robot = mindcli.RobotByName(mindcli.DefaultRobotName())
-	} else {
-		robot = mindcli.RobotByName(args[0])
+	if robotIp == "" {
+		var robot *Robot
+		if len(args) < 1 {
+			robot = mindcli.RobotByName(mindcli.DefaultRobotName())
+		} else {
+			robot = mindcli.RobotByName(args[0])
+		}
+		if robot == nil {
+			fmt.Println("Could not find robot with that name\nPlease run `mind scan`")
+			os.Exit(-1)
+		}
+		robots, _ := mindcli.RobotScanner.ScanIP(robot.IP, time.Duration(2))
+		if len(robots) < 1 {
+			fmt.Println("Could not find any robots\nPlease run `mind scan`")
+			os.Exit(-1)
+		}
+		if robots[0].Name != robot.Name {
+			fmt.Println("Looks like robot has changed IP\nPlease run `mind scan`")
+			os.Exit(-1)
+		}
+
+		robotIp = robot.IP
 	}
-	if robot == nil {
-		fmt.Println("Could not find robot with that name\nPlease run `mind scan`")
-		os.Exit(-1)
-	}
-	robots, _ := mindcli.RobotScanner.ScanIP(robot.IP, time.Duration(2))
-	if len(robots) < 1 {
-		fmt.Println("Could not find any robots\nPlease run `mind scan`")
-		os.Exit(-1)
-	}
-	if robots[0].Name != robot.Name {
-		fmt.Println("Looks like robot has changed IP\nPlease run `mind scan`")
-		os.Exit(-1)
-	}
-	ip, _ := GetLocalIPByNeighbourIP(robot.IP)
+	ip, _ := GetLocalIPByNeighbourIP(robotIp)
 	xParams := []string{"mindcli-run"}
 	if noInstall {
 		xParams = append(xParams, "-n")
-	}
-	if robotIp == "" {
-		robotIp = robot.IP
 	}
 	if ret := net.ParseIP(robotIp); ret == nil {
 		fmt.Println("The IP address you just typed does NOT meet the standard ipv4 format.")
