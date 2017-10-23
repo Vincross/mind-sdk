@@ -75,8 +75,16 @@ func (d *SensorWalkSkill) walk() {
 }
 
 func (d *SensorWalkSkill) OnStart() {
-	hexabody.Start()
-	distance.Start()
+	err := hexabody.Start()
+	if err != nil {
+		log.Error.Println("Hexabody start err:", err)
+		return
+	}
+	err = distance.Start()
+	if err != nil {
+		log.Error.Println("Distance start err:", err)
+		return
+	}
 	if !distance.Available() {
 		log.Error.Println("Distance sensor is not available")
 	}

@@ -41,6 +41,11 @@ func NewSkill() skill.Interface {
 
 func (b *BalanceSkill) KeepBalance() {
 	curx, cury := 0.0, 0.0
+	err := accelerometer.Start()
+	if err != nil {
+		log.Error.Println("Accelerometer start error:", err)
+		return
+	}
 	for {
 		_, _, _, x, y, _, err := accelerometer.Value()
 		if err != nil {
@@ -59,8 +64,11 @@ func (b *BalanceSkill) KeepBalance() {
 }
 
 func (b *BalanceSkill) OnStart() {
-	accelerometer.Start()
-	hexabody.Start()
+	err := hexabody.Start()
+	if err != nil {
+		log.Error.Println("Hexabody start error:", err)
+		return
+	}
 
 	hexabody.MoveHead(0, 0)
 	hexabody.Stand()

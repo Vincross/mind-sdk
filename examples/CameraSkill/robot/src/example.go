@@ -22,10 +22,14 @@ func NewSkill() skill.Interface {
 }
 
 func (d *example) OnStart() {
-	media.Start()
 }
 
 func (d *example) OnConnect() {
+	err := media.Start()
+	if err != nil {
+		log.Error.Println("Media start err:", err)
+		return
+	}
 	for {
 		log.Info.Println("Connected")
 		buf := new(bytes.Buffer)

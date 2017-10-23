@@ -47,7 +47,14 @@ func (d *OpenCVSkill) sight() {
 
 func (d *OpenCVSkill) OnStart() {
 	log.Info.Println("Started")
-	hexabody.Start()
+}
+
+func (d *example) OnConnect() {
+	err := hexabody.Start()
+	if err != nil {
+		log.Error.Println("Hexabody start err:", err)
+		return
+	}
 	if !media.Available() {
 		log.Error.Println("Media driver not available")
 		return

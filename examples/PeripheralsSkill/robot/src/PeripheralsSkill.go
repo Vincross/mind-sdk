@@ -21,7 +21,11 @@ func NewSkill() skill.Interface {
 }
 
 func runADC() {
-	adc.Start()
+	err := adc.Start()
+	if err != nil {
+		log.Error.Println("adc start err:", err)
+		return
+	}
 	for i := 0; i < 4; i++ {
 		log.Info.Println(adc.Value(i))
 	}
@@ -29,7 +33,11 @@ func runADC() {
 }
 
 func runGPIO() {
-	gpio.Start()
+	err := gpio.Start()
+	if err != nil {
+		log.Error.Println("gpio start err:", err)
+		return
+	}
 	for i := 0; i < 4; i++ {
 		log.Info.Println("GPIO PIN:", i)
 		gpio.Output(i, i%2 == 0)
@@ -39,7 +47,11 @@ func runGPIO() {
 }
 
 func runI2C() {
-	i2c.Start()
+	err := i2c.Start()
+	if err != nil {
+		log.Error.Println("i2c start err:", err)
+		return
+	}
 	i2c.Set(0x41, 0x00, 0x00)
 	log.Info.Println(i2c.Value(0x41, 0x00, 1))
 	i2c.Set(0x41, 0x14, 0xff)
