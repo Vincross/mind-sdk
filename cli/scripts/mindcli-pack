@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -eu
-if [ -e manifest.json ] && [ -e robot/skill ] && [ -e remote ]; then
+if [ -e manifest.json ] && [ -e robot/skill ]; then
 	# Validate manifest.json
 	SKILLID=`cat manifest.json | jq -r ".skillID"`
 	VERSION=`cat manifest.json | jq -r ".version"`
