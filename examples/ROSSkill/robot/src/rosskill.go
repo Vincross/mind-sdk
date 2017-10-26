@@ -54,7 +54,11 @@ func (d *rosskill) publishImages() {
 }
 
 func (d *rosskill) OnStart() {
-	media.Start()
+	err := media.Start()
+	if err != nil {
+		log.Error.Println("Media start err:", err)
+		return
+	}
 	d.publishImages()
 }
 

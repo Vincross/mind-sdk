@@ -78,12 +78,16 @@ func (d *SightSkill) sight() {
 }
 
 func (d *SightSkill) OnStart() {
-	hexabody.Start()
+	err := hexabody.Start()
+	if err != nil {
+		log.Error.Println("Hexabody start err:", err)
+		return
+	}
 	if !media.Available() {
 		log.Error.Println("Media driver not available")
 		return
 	}
-	if err := media.Start(); err != nil {
+	if err = media.Start(); err != nil {
 		log.Error.Println("Media driver could not start")
 	}
 }
