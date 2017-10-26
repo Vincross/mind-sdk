@@ -33,6 +33,7 @@ type SensorWalkSkill struct {
 	skill.Base
 	stop      chan bool
 	direction float64
+	isRunning bool
 }
 
 func NewSkill() skill.Interface {
@@ -102,10 +103,30 @@ func (d *SensorWalkSkill) OnDisconnect() {
 func (d *SensorWalkSkill) OnRecvString(data string) {
 	switch data {
 	case "start":
+		d.isRunning = true
 		go d.walk()
 	case "stop":
 		d.stop <- true
+		d.isRunning = false
 		hexabody.StopWalkingContinuously()
 		hexabody.Relax()
+	case "GaitWave":
+		d.changeGait(hexabody.GaitWave)
+	case "GaitRipple":
+		d.changeGait(hexabody.GaitRipple)
+	case "GaitTripod":
+		d.changeGait(hexabody.GaitTripod)
+	case "GaitOriginal":
+		d.changeGait(hexabody.GaitOriginal)
+	}
+}
+
+func (d *SensorWalkSkill) changeGait(gait hexabody.GaitType) {
+	if d.isRunning {
+		hexabody.StopWalkingContinuously()
+	}
+	hexabody.SelectGait(gait)
+	if d.isRunning {
+		hexabody.WalkContinuously(0, WALK_SPEED)
 	}
 }
