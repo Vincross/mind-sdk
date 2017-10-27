@@ -1,5 +1,5 @@
 # MIND SDK
-![](https://img.shields.io/badge/master-0.5.3-green.svg?style=flat)
+![](https://img.shields.io/badge/master-0.6.0-green.svg?style=flat)
 
 This repository contains everything needed to develop *Skills* for the [HEXA](https://www.vincross.com/hexa)
 
@@ -10,7 +10,7 @@ Check out the [Introduction and Getting Started guides](https://developer.vincro
 Command-line Interface used for *Skill* development.
 
 ```
-MIND Command-line Interface v0.5.3
+MIND Command-line Interface v0.6.0
 
 Usage:
   mind [command]
