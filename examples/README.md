@@ -35,3 +35,9 @@ This Skill makes the HEXA stand up when it detects human faces.
 ## [ROSSkill](ROSSkill)
 ROSSkill implements a *skill* that shows how to publish images to an ROS topic via rosserial.
 
+## [SelectGaitSkill](SelectGaitSkill)
+SelectGaitSkill is an example project showing how to select different gaits for hexa.
+
+## [CameraSkill](CameraSkill)
+CameraSkill use the media to show the video on the remote webpage.
+
