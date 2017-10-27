@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SensorWalkSkill</title>
+		<script type="text/javascript" src="mind-framework.js"></script>
+		<script type="text/javascript">
+			mind.init({callback: function(robot) {
+				skillID="SelectGaitSkill";
+				robot.connectSkill({
+					skillID: skillID
+				});
+				document.getElementById("start").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "start"
+					})
+				}
+				document.getElementById("stop").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "stop"
+					})
+				}
+				document.getElementById("GaitWave").onclick = function() {
+					robot.sendData({
+						skillID: skillID,
+						data: "GaitWave"
+					})
+				}
+				document.getElementById("GaitRipple").onclick = function() {
+					robot.sendData({
+						skillID: skillID,
+						data: "GaitRipple"
+					})
+				}
+				document.getElementById("GaitTripod").onclick = function() {
+					robot.sendData({
+						skillID: skillID,
+						data: "GaitTripod"
+					})
+				}
+				document.getElementById("GaitOriginal").onclick = function() {
+					robot.sendData({
+						skillID: skillID,
+						data: "GaitOriginal"
+					})
+				}
+			}});
+		</script>
+		<style>
+			#select_gait_box {
+				margin: 0 auto;
+				width: 350px;
+			}
+			#run_box {
+				margin: 0 auto;
+				width: 100px;	
+			}
+			.span {
+				text-align: center;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="run_box">
+			<button id="start">Start</button>
+			<button id="stop">Stop</button>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div id="select_gait_box">
+			<div class="span">Select Gait</div>
+			<br>
+			<button id="GaitWave">GaitWave</button>
+			<button id="GaitRipple">GaitRipple</button>
+			<button id="GaitTripod">GaitTripod</button>
+			<button id="GaitOriginal">GaitOriginal</button>
+		</div>
+	</body>
+</html>
