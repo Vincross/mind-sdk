@@ -49,7 +49,7 @@ func (d *OpenCVSkill) OnStart() {
 	log.Info.Println("Started")
 }
 
-func (d *example) OnConnect() {
+func (d *OpenCVSkill) OnConnect() {
 	err := hexabody.Start()
 	if err != nil {
 		log.Error.Println("Hexabody start err:", err)
