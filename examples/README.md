@@ -41,3 +41,5 @@ SelectGaitSkill is an example project showing how to select different gaits for 
 ## [CameraSkill](CameraSkill)
 CameraSkill use the media to show the video on the remote webpage.
 
+## [UseOwnLibSkill](UseOwnLibSkill)
+UseOwnLibSkill is used to show how to use a library writes by yourself and bind it with the skill.
