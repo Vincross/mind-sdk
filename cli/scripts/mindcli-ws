@@ -203,7 +203,9 @@ install() {
 		case "${status,,}" in
 			"succeed")
 				echo -e "${GREEN}Installation successful !${NOCOLOR}"
-				echo "Point your browser to: http://localhost:7597"
+				if [ -e /skill/remote ]; then
+					echo "Point your browser to: http://localhost:7597"
+				fi
 				connect
 				break
 				;;	
