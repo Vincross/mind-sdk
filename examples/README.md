@@ -41,3 +41,6 @@ SelectGaitSkill is an example project showing how to select different gaits for 
 ## [CameraSkill](CameraSkill)
 CameraSkill use the media to show the video on the remote webpage.
 
+## [AudioSkill](AudioSkill)
+AudioSkill shows some simple examples that how to use 'audio' driver on HEXA.
+

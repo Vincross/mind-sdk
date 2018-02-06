@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>AudioSkill</title>
+		<script type="text/javascript" src="mind-framework.js"></script>
+		<script type="text/javascript">
+			mind.init({callback: function(robot){
+				skillID="AudioSkill";
+				robot.connectSkill({
+					skillID: skillID
+				});
+
+				document.getElementById("stop").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "stop"
+					})
+				}
+
+				document.getElementById("listenAndPlay").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "listenAndPlay"
+					})
+				}
+
+				document.getElementById("recordToFile").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "recordToFile"
+					})
+				}
+
+				document.getElementById("playWithOriginFile").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "playWithOriginFile"
+					})
+				}
+
+				document.getElementById("playWithFile").onclick = function() {
+					robot.sendData({
+						skillID: skillID, 
+						data: "playWithFile"
+					})
+				}
+			}});
+
+			
+
+		</script>
+		<style type="text/css">
+			#funcbox {
+				margin: 0 auto;
+				width: 650px;
+			}
+			#stopbox {
+				margin: 0 auto;
+				width: 50px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="funcbox">
+			<button id="listenAndPlay">Listen and Play</button>
+			<button id="recordToFile">Record to the file</button>
+			<button id="playWithFile">Play with the file recorded before</button>
+			<button id="playWithOriginFile">Play with Origin file</button>
+		</div>
+		<br>
+		<br>
+		<div id="stopbox">
+			<button id="stop">Stop</button>	
+		</div>
+	</body>
+</html>
