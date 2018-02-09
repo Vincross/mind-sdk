@@ -61,6 +61,7 @@ func (d *SensorWalkSkill) shouldChangeDirection() bool {
 }
 
 func (d *SensorWalkSkill) walk() {
+	hexabody.WalkContinuously(0, WALK_SPEED)
 	for {
 		select {
 		case <-d.stop:
