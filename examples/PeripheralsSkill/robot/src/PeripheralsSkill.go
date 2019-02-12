@@ -20,6 +20,12 @@ func NewSkill() skill.Interface {
 	return &PeripheralsSkill{}
 }
 
+func (d *PeripheralsSkill) OnConnect() {
+	runADC()
+	runGPIO()
+	runI2C()
+}
+
 func runADC() {
 	err := adc.Start()
 	if err != nil {
@@ -59,10 +65,4 @@ func runI2C() {
 	i2c.Set(0x41, 0x15, 0x0)
 	log.Info.Println(i2c.Value(0x41, 0x15, 1))
 	i2c.Close()
-}
-
-func (d *PeripheralsSkill) OnConnect() {
-	runADC()
-	runGPIO()
-	runI2C()
 }
