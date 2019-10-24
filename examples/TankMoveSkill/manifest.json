@@ -1,0 +1,6 @@
+{
+    "name": "demo",
+    "skillID": "demo",
+    "version": "1.0.0",
+    "robotTypes": ["MK2600"]
+}

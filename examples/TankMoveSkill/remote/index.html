@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>demo</title>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="pragma" contect="pragma">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+
+    <script src="mind-framework.js"></script>
+    <script type="text/javascript">
+        var skillID = 'demo';
+
+        // Rewrite
+        Mind.prototype.onConnectSkillSuccess = function (payload) {
+            this.getRobotInfo()
+        }
+        Mind.prototype.onGetRobotInfoSuccess = function (payload) {
+            console.log('onGetRobotInfoSuccess', payload)
+        }
+
+        Mind.prototype.move = function () {
+            this.send({
+                action: "move"
+            })
+        }
+
+        Mind.prototype.stop = function () {
+            this.send({
+                action: "stop"
+            })
+        }
+        var mindSkill = new Mind(skillID);
+        mindSkill.listener();
+    </script>
+</head>
+
+<body>
+    <input type="button" value="Move" style="width: 150px; height:30px; background-color:rgb(88,12,128)"
+           onclick="mindSkill.move()" />
+    <input type="button" value="Stop" style="width: 150px; height:30px; background-color:rgb(88,12,128)"
+           onclick="mindSkill.stop()" />
+</body>
+
+</html>
