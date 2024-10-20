@@ -12,7 +12,7 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y \
     jq \
 		ruby-dev \
     && apt-get clean && apt-get autoremove --purge
-RUN gem install fpm
+#RUN gem install fpm
 # Setup cross compilers
 ENV AS=/usr/bin/${CROSS}-as \
     AR=/usr/bin/${CROSS}-ar \

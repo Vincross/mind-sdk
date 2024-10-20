@@ -1,4 +1,4 @@
-REGISTRY := vincross
+REGISTRY := krinkin
 NAME := xcompile
 DOCKERFILE := Dockerfile
 CACHEFILE := .xcompile
