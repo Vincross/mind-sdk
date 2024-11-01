@@ -9,7 +9,12 @@ INSTALL_BIN := ${GOBIN}/mind
 
 .PHONY : install build push upload clean attach
 
-build : ${ARTIFACTS}
+build : init ${ARTIFACTS}
+
+init:
+	go mod init mindsdk/cli
+	go mod tidy
+	go mod vendor
 
 ${ARTIFACTS} : main.go
 	docker build -t ${NAME} .
