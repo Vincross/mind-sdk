@@ -14,7 +14,7 @@ build : ${ARTIFACTS}
 ${ARTIFACTS} : main.go
 	docker build -t ${NAME} .
 	mkdir -p bin
-	go build -i -o bin/mind mindsdk/cli 
+	go build -o bin/mind mindsdk/cli 
 	GOOS=darwin  GOARCH=amd64 go build -i -o bin/mind-Darwin-x86_64 mindsdk/cli 
 	GOOS=linux   GOARCH=amd64 go build -i -o bin/mind-Linux-x86_64 mindsdk/cli 
 	GOOS=windows GOARCH=amd64 go build -i -o bin/mind.exe mindsdk/cli
